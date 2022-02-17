@@ -1,17 +1,15 @@
+import { PrismaClient } from "@prisma/client";
 import app from "./app";
-import prisma from "../client";
 
 export const createTestServer = () => {
-  // const prisma = new PrismaClient();
-
-  const server = app();
+  const prisma = new PrismaClient();
 
   const internalConfig: { server: any } = {
     server: undefined,
   };
 
   beforeAll(async () => {
-    const instance = server.listen({ port: 8003 });
+    const instance = app().listen({ port: 8003 });
 
     internalConfig.server = instance;
 

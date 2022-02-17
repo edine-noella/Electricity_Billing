@@ -9,7 +9,7 @@ describe("Setup prisma", () => {
     await client.$disconnect();
   });
 
-  test("should return something from db", async () => {
+  test.skip("should return something from db", async () => {
     const data = await client.token.findMany({ take: 1, select: { id: true } });
     expect(data).toBeTruthy();
   });

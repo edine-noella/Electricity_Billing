@@ -39,14 +39,12 @@ export async function createToken(req: Request, res: Response) {
     });
   }
 
-  if (amount.length < 6) {
+  if (amount.length > 6) {
     return res.status(401).json({
       message:
         "Invalid amount, only multiples of 100 not greater than 182,500 is accepted",
     });
   }
 
-  console.log({ meter, amount });
-
-  return res.status(201);
+  return res.status(201).json({ message: "works" });
 }

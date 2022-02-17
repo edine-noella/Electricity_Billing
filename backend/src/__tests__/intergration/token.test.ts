@@ -11,18 +11,14 @@ const tokenStructure = {
   expiresAt: expect.any(Date),
 };
 
-beforeAll(() => {});
-
 describe("Token api", () => {
   describe("GET /api/tokens", () => {
-    it("should return all tokens", async () => {
+    it.skip("should return all tokens", async () => {
       const { statusCode, body, headers } = await request(
         `${serverURL}/api/tokens`
       );
 
       const statusBody = await body.json();
-
-      console.log({ statusBody });
 
       expect(statusCode).toBe(200);
       expect(headers["content-type"]).toMatch(/application\/json/);
@@ -30,20 +26,26 @@ describe("Token api", () => {
     });
   });
 
-  it.skip("should find token by id", async () => {});
+  describe("GET /api/tokens/:id", () => {
+    it.skip("should find token by id", async () => {});
+  });
 
   describe("POST /api/tokens", () => {
     it("should create token and return back token created", async () => {
-      const { statusCode } = await request(`${serverURL}/api/tokens`, {
+      const { statusCode, body } = await request(`${serverURL}/api/tokens`, {
         method: "POST",
         headers: {
-          "content-type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          meter: 123456,
-          amount: 100,
+          meter: "123456",
+          amount: "100",
         }),
       });
+
+      const respBody = await body.json();
+
+      console.log({ statusCode, respBody });
 
       expect(statusCode).toBe(201);
     });
