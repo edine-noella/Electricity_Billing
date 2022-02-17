@@ -1,5 +1,6 @@
 import prisma from "../client";
 import { Request, Response } from "express";
+import { generateToken, getDays } from "../utils/index";
 
 export async function getAllTokens(_req: Request, res: Response) {
   const tokens = await prisma.token.findMany();
@@ -25,7 +26,9 @@ export async function getTokenById(req: Request, res: Response) {
 }
 
 export async function createToken(req: Request, res: Response) {
-  const { meter, amount } = req.body;
+  let { meter, amount } = req.body;
+
+  amount = parseInt(amount);
 
   if (!meter || !amount) {
     return res.status(401).json({
@@ -33,18 +36,32 @@ export async function createToken(req: Request, res: Response) {
     });
   }
 
-  if (meter.length < 6) {
+  if (meter.length != 6) {
     return res.status(401).json({
       message: "Invalid meter, only 6 digits accepted",
     });
   }
 
-  if (amount.length > 6) {
+  if (
+    amount.length > 6 ||
+    !(parseInt(amount) < 182500) ||
+    !(amount % 100 == 0)
+  ) {
     return res.status(401).json({
       message:
         "Invalid amount, only multiples of 100 not greater than 182,500 is accepted",
     });
   }
 
-  return res.status(201).json({ message: "works" });
+  const token = await prisma.token.create({
+    data: {
+      meter,
+      token: generateToken(),
+      amount,
+      status: true,
+      expiresAt: getDays(amount),
+    },
+  });
+
+  return res.status(201).json(token);
 }

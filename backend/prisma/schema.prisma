@@ -13,11 +13,11 @@ datasource db {
 model Token {
   id        Int     @id @default(autoincrement())
   token     String  @unique
-  meter     Int
-  amount    Int
+  meter     String 
+  amount    Int 
   status    Boolean
   createdAt DateTime @default(now())
-  expireAt  DateTime 
+  expiresAt  DateTime 
   updatedAt DateTime @updatedAt 
 }
 

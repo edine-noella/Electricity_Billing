@@ -4,25 +4,31 @@ import { request } from "undici";
 const { serverURL } = createTestServer();
 
 const tokenStructure = {
+  id: expect.any(Number),
+  token: expect.any(String),
   meter: expect.any(String),
-  amount: expect.any(String),
-  createdAt: expect.any(Date),
-  updateAt: expect.any(Date),
-  expiresAt: expect.any(Date),
+  amount: expect.any(Number),
+  createdAt: expect.any(String),
+  updatedAt: expect.any(String),
+  expiresAt: expect.any(String),
+  status: expect.any(Boolean),
 };
 
 describe("Token api", () => {
   describe("GET /api/tokens", () => {
-    it.skip("should return all tokens", async () => {
+    it("should return all tokens", async () => {
       const { statusCode, body, headers } = await request(
         `${serverURL}/api/tokens`
       );
 
-      const statusBody = await body.json();
+      const parsedBody = await body.json();
 
       expect(statusCode).toBe(200);
       expect(headers["content-type"]).toMatch(/application\/json/);
-      expect(statusBody).toEqual([]);
+
+      for (const token of parsedBody) {
+        expect(token).toMatchObject(tokenStructure);
+      }
     });
   });
 
@@ -43,11 +49,11 @@ describe("Token api", () => {
         }),
       });
 
-      const respBody = await body.json();
-
-      console.log({ statusCode, respBody });
+      const resBody = await body.json();
 
       expect(statusCode).toBe(201);
+
+      expect(resBody).toMatchObject(tokenStructure);
     });
   });
 });
