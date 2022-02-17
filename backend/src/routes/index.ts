@@ -1,5 +1,5 @@
 import { Express } from "express";
-import { createToken, getAllTokens, getTokenById } from "./tokens";
+import { createToken, getAllTokens, getTokenById, getByMeter } from "./tokens";
 
 export default function routes(app: Express) {
   app.get("/healthcheck", (_req, res) => res.sendStatus(200));
@@ -14,6 +14,7 @@ export default function routes(app: Express) {
   // by token
   app.post("/api/tokens", (req, res) => createToken(req, res));
 
+  app.get("/api/check/:meterId", (req, res) => getByMeter(req, res));
   // app.get("/api/users/:id", (req, res) => getUserHandler(req, res));
 
   // app.post("/api/users", (req, res) => createUserHandler(req, res));

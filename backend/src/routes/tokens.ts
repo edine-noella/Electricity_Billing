@@ -1,6 +1,7 @@
 import prisma from "../client";
 import { Request, Response } from "express";
 import { generateToken, getDays } from "../utils/index";
+import { Token } from "@prisma/client";
 
 export async function getAllTokens(_req: Request, res: Response) {
   const tokens = await prisma.token.findMany();
@@ -64,4 +65,34 @@ export async function createToken(req: Request, res: Response) {
   });
 
   return res.status(201).json(token);
+}
+
+export async function getByMeter(req: Request, res: Response) {
+  const { meterId } = req.params;
+
+  if (!meterId) {
+    return res.status(401).json({
+      message: "Meter should be provided",
+    });
+  }
+
+  const tokens = await prisma.token.findMany({
+    orderBy: [
+      {
+        createdAt: "desc",
+      },
+    ],
+  });
+
+  if (!tokens) {
+    return res.status(404).send("No token found with this meter ");
+  }
+
+  const meter = tokens.find((item) => item.meter === meterId);
+
+  if(!meter) {
+    return res.status(404).send("No token found with this meter ");
+  }
+
+  return res.status(200).send(meter);
 }
