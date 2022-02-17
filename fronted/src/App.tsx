@@ -1,45 +1,40 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import {Fragment} from "react";
+import {Routes, Route, Link, Outlet} from "react-router-dom";
+import Buy from "./components/buy"
+import Check from "./components/check"
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+    <Fragment>
+      <Routes>
+        <Route path="/" element={<Home />} >
+          <Route path="buy" element={<Buy />} />
+          <Route path="check" element={<Check />} />
+        </Route>
+      </Routes>
+
+    </Fragment>
   )
+
+}
+
+
+function Home() {
+  return <section>
+    <nav className="flex shadow-sm bg-sky-900 text-white items-center justify-center gap-8 py-4">
+
+      <h1 className="font-bold">Electri-C</h1>
+      <div className="flex gap-4">
+        <Link to="/buy">Buy</Link>
+        <Link to="/check">Check</Link>
+      </div>
+    </nav>
+    <div className="flex justify-center items-center py-20 flex-col">
+      <Outlet />
+    </div>
+  </section>
+
 }
 
 export default App
