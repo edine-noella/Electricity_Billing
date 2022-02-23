@@ -7,7 +7,6 @@ To run the app do
 ```bash
 npm run dev
 ```
-<<<<<<< HEAD
 
 Open app on port 5000
 
@@ -17,5 +16,3 @@ Open app on port 5000
 ```bash
 npm run tests
 ```
-=======
->>>>>>> origin/main
