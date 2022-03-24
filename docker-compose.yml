@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  client:
+    image: "edine2312/frontend"
+    mem_limit: 128m
+    hostname: backend
+  server:
+    image: "edine2312/backend"
+    mem_limit: 128m
+    hostname: backend
+  nginx:
+    image: "edine2312/nginx"
+    mem_limit: 128m
+    hostname: nginx
+    ports:
+      - "80:80"
